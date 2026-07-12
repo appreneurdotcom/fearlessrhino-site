@@ -1,7 +1,39 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><%= typeof title !== 'undefined' ? title : 'Fearless Rhino' %></title>
-<meta name="description" content="<%= typeof description !== 'undefined' ? description : 'Fearless Rhino — branding, visibility, AI, and automation for businesses that refuse to be overlooked.' %>">
+<%
+  var _title = (typeof title !== 'undefined' && title) ? title : 'Fearless Rhino';
+  var _desc = (typeof description !== 'undefined' && description) ? description : 'Fearless Rhino — branding, visibility, AI, and automation for businesses that refuse to be overlooked.';
+  var _base = (typeof baseUrl !== 'undefined' && baseUrl) ? baseUrl : '';
+  var _canonical = (typeof canonicalUrl !== 'undefined' && canonicalUrl) ? canonicalUrl : _base;
+  var _ogImage = (typeof ogImage !== 'undefined' && ogImage) ? ogImage : (_base + '/images/logo/mark-lime-1024.png');
+  var _ogType = (typeof ogType !== 'undefined' && ogType) ? ogType : 'website';
+  var _noindex = (typeof noindex !== 'undefined' && noindex) ? true : false;
+%>
+<title><%= _title %></title>
+<meta name="description" content="<%= _desc %>">
+<meta name="robots" content="<%= _noindex ? 'noindex, nofollow' : 'index, follow' %>">
+<link rel="canonical" href="<%= _canonical %>">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="<%= _ogType %>">
+<meta property="og:site_name" content="Fearless Rhino">
+<meta property="og:title" content="<%= _title %>">
+<meta property="og:description" content="<%= _desc %>">
+<meta property="og:url" content="<%= _canonical %>">
+<meta property="og:image" content="<%= _ogImage %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= _title %>">
+<meta name="twitter:description" content="<%= _desc %>">
+<meta name="twitter:image" content="<%= _ogImage %>">
+
+<!-- Organization + WebSite structured data (site-wide) -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"<%= _base %>/#organization","name":"Fearless Rhino","url":"<%= _base %>/","logo":"<%= _base %>/images/logo/mark-lime-1024.png","description":"Branding, visibility, AI, and automation for businesses that refuse to be overlooked."},{"@type":"WebSite","@id":"<%= _base %>/#website","url":"<%= _base %>/","name":"Fearless Rhino","publisher":{"@id":"<%= _base %>/#organization"}}]}
+</script>
+<% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+<script type="application/ld+json"><%- jsonLd %></script>
+<% } %>
+
 <link rel="icon" type="image/svg+xml" href="/images/logo/mark-lime.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

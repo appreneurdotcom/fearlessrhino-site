@@ -21,6 +21,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
+function monthYearToISO(str) {
+  const months = { January: '01', February: '02', March: '03', April: '04', May: '05', June: '06', July: '07', August: '08', September: '09', October: '10', November: '11', December: '12' };
+  const parts = String(str || '').trim().split(/\s+/);
+  if (parts.length === 2 && months[parts[0]]) return `${parts[1]}-${months[parts[0]]}-01`;
+  return null;
+}
+function ldjson(obj) {
+  return JSON.stringify(obj).replace(/</g, '\\u003c');
+}
+
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +55,7 @@ app.use(
 app.use((req, res, next) => {
   res.locals.navLinks = navLinks;
   res.locals.baseUrl = (process.env.APP_BASE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+  res.locals.canonicalUrl = `${res.locals.baseUrl}${req.path}`;
   res.locals.formatMoney = formatMoney;
   next();
 });
@@ -56,41 +67,41 @@ function wantsJson(req) {
 /* ============================== Marketing pages ============================== */
 
 app.get('/', (req, res) => {
-  res.render('home', { active: 'home', title: 'Fearless Rhino — Be impossible to overlook.' });
+  res.render('home', { active: 'home', title: 'Fearless Rhino — Be impossible to overlook.' , description: 'Fearless Rhino fixes your branding, gets you found across Google and AI search, and builds custom automation so your business is impossible to overlook.' });
 });
 
 app.get('/about', (req, res) => {
-  res.render('about', { active: 'about', title: 'About — Fearless Rhino' });
+  res.render('about', { active: 'about', title: 'About — Fearless Rhino' , description: 'Meet Fearless Rhino, a branding, visibility, AI, and automation studio for businesses that refuse to be overlooked.' });
 });
 
 app.get('/services', (req, res) => {
-  res.render('services', { active: 'services', title: 'Services — Fearless Rhino' });
+  res.render('services', { active: 'services', title: 'Services — Fearless Rhino' , description: 'Branding, SEO and AI-search visibility (GEO and AEO), custom automation, and AI builds from Fearless Rhino, so you get found and win the work.' });
 });
 
 app.get('/process', (req, res) => {
-  res.render('process', { active: 'process', title: 'Process — Fearless Rhino' });
+  res.render('process', { active: 'process', title: 'Process — Fearless Rhino' , description: 'How Fearless Rhino works: a clear, repeatable process from brand and visibility audit through build, launch, and ongoing optimization.' });
 });
 
 app.get('/results', (req, res) => {
-  res.render('results', { active: 'results', title: 'Results — Fearless Rhino' });
+  res.render('results', { active: 'results', title: 'Results — Fearless Rhino' , description: 'Real outcomes from Fearless Rhino clients across branding, search and AI visibility, and automation.' });
 });
 
 app.get('/pricing', (req, res) => {
-  res.render('pricing', { active: 'pricing', title: 'Pricing — Fearless Rhino' });
+  res.render('pricing', { active: 'pricing', title: 'Pricing — Fearless Rhino' , description: 'Simple, transparent pricing for Fearless Rhino branding, visibility, and automation engagements.' });
 });
 
 app.get('/privacy', (req, res) => {
-  res.render('privacy', { active: '', title: 'Privacy Policy — Fearless Rhino' });
+  res.render('privacy', { active: '', title: 'Privacy Policy — Fearless Rhino' , description: 'How Fearless Rhino collects, uses, and protects your information.' });
 });
 
 app.get('/terms', (req, res) => {
-  res.render('terms', { active: '', title: 'Terms & Conditions — Fearless Rhino' });
+  res.render('terms', { active: '', title: 'Terms & Conditions — Fearless Rhino' , description: 'The terms and conditions governing use of the Fearless Rhino website and services.' });
 });
 
 /* ================================== Apps ====================================== */
 
 app.get('/apps', (req, res) => {
-  res.render('apps', { active: 'applications', apps: content.apps, title: 'Applications — Fearless Rhino' });
+  res.render('apps', { active: 'applications', apps: content.apps, title: 'Applications — Fearless Rhino' , description: 'Applications from Fearless Rhino, including RhinoRank, CitationForge, and Herd Signals for AI search visibility and GEO.' });
 });
 
 app.get('/apps/:id', (req, res) => {
@@ -98,13 +109,21 @@ app.get('/apps/:id', (req, res) => {
   if (!item) {
     return res.status(404).render('app-detail', { active: 'applications', app: null, title: 'App not found — Fearless Rhino' });
   }
-  res.render('app-detail', { active: 'applications', app: item, title: `${item.name} — Fearless Rhino` });
+  const appLd = ldjson({ '@context': 'https://schema.org', '@graph': [
+    { '@type': 'SoftwareApplication', name: item.name, applicationCategory: item.category, description: item.blurb, publisher: { '@type': 'Organization', name: 'Fearless Rhino', url: `${res.locals.baseUrl}/` } },
+    { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${res.locals.baseUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Applications', item: `${res.locals.baseUrl}/apps` },
+      { '@type': 'ListItem', position: 3, name: item.name, item: `${res.locals.baseUrl}/apps/${item.id}` },
+    ] },
+  ] });
+  res.render('app-detail', { active: 'applications', app: item, title: `${item.name} — Fearless Rhino`, description: item.blurb, ogType: 'article', jsonLd: appLd });
 });
 
 /* ================================== Blog ======================================= */
 
 app.get('/blog', (req, res) => {
-  res.render('blog', { active: 'blog', posts: content.posts, title: 'Blog — Fearless Rhino' });
+  res.render('blog', { active: 'blog', posts: content.posts, title: 'Blog — Fearless Rhino' , description: 'Insights from Fearless Rhino on SEO, GEO, AEO, AI search visibility, and automation.' });
 });
 
 app.get('/blog/:id', (req, res) => {
@@ -112,7 +131,16 @@ app.get('/blog/:id', (req, res) => {
   if (!post) {
     return res.status(404).render('blog-post', { active: 'blog', post: null, title: 'Post not found — Fearless Rhino' });
   }
-  res.render('blog-post', { active: 'blog', post, title: `${post.title} — Fearless Rhino` });
+  const _iso = monthYearToISO(post.date);
+  const postLd = ldjson({ '@context': 'https://schema.org', '@graph': [
+    Object.assign({ '@type': 'BlogPosting', headline: post.title, description: post.excerpt, mainEntityOfPage: `${res.locals.baseUrl}/blog/${post.id}`, author: { '@type': 'Organization', name: 'Fearless Rhino' }, publisher: { '@type': 'Organization', name: 'Fearless Rhino', logo: { '@type': 'ImageObject', url: `${res.locals.baseUrl}/images/logo/mark-lime-1024.png` } } }, _iso ? { datePublished: _iso } : {}),
+    { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${res.locals.baseUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${res.locals.baseUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `${res.locals.baseUrl}/blog/${post.id}` },
+    ] },
+  ] });
+  res.render('blog-post', { active: 'blog', post, title: `${post.title} — Fearless Rhino`, description: post.excerpt, ogType: 'article', jsonLd: postLd });
 });
 
 /* ================================= Contact ===================================== */
@@ -121,6 +149,7 @@ app.get('/contact', (req, res) => {
   res.render('contact', {
     active: 'contact',
     title: 'Contact — Fearless Rhino',
+    description: 'Get in touch with Fearless Rhino. Book a strategy call or send a message about branding, visibility, AI, and automation.',
     sent: req.query.sent === '1',
     formError: req.query.error || null,
   });
@@ -185,11 +214,22 @@ app.get('/domains/:slug', (req, res) => {
   if (!domain) {
     return res.status(404).render('domain-detail', { active: 'domains', domain: null, title: 'Domain not found — Fearless Rhino' });
   }
+  const _price = domain.buyNowPrice || (domain.monthlyPrice && domain.totalMonths ? domain.monthlyPrice * domain.totalMonths : domain.monthlyPrice) || null;
+  const domainLd = ldjson({ '@context': 'https://schema.org', '@graph': [
+    Object.assign({ '@type': 'Product', name: domain.domainName, description: domain.description || `${domain.domainName} is a premium domain name for sale.`, category: 'Domain name', url: `${res.locals.baseUrl}/domains/${domain.slug}` }, _price ? { offers: { '@type': 'Offer', price: String(_price), priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: `${res.locals.baseUrl}/domains/${domain.slug}` } } : {}),
+    { '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${res.locals.baseUrl}/` },
+      { '@type': 'ListItem', position: 2, name: 'Domain Names', item: `${res.locals.baseUrl}/domains` },
+      { '@type': 'ListItem', position: 3, name: domain.domainName, item: `${res.locals.baseUrl}/domains/${domain.slug}` },
+    ] },
+  ] });
   res.render('domain-detail', {
     active: 'domains',
     domain,
     title: `${domain.domainName} — Domain For Sale — Fearless Rhino`,
     description: domain.description || `${domain.domainName} is for sale.`,
+    ogType: 'product',
+    jsonLd: domainLd,
     sent: req.query.sent || null,
     errorType: req.query.errorType || null,
     formError: req.query.error || null,
@@ -393,10 +433,29 @@ app.post('/admin/domains/:id/delete', requireAdmin, verifyCsrf, (req, res) => {
   res.redirect('/admin?flashType=ok&flash=' + encodeURIComponent(domain ? `Deleted ${domain.domainName}.` : 'Deleted.'));
 });
 
+/* ============================ robots.txt & sitemap ============================== */
+
+app.get('/robots.txt', (req, res) => {
+  const body = `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${res.locals.baseUrl}/sitemap.xml\n`;
+  res.type('text/plain').send(body);
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  const base = res.locals.baseUrl;
+  const paths = ['/', '/about', '/services', '/process', '/results', '/pricing', '/apps', '/blog', '/contact', '/domains', '/privacy', '/terms'];
+  content.apps.forEach((a) => paths.push(`/apps/${a.id}`));
+  content.posts.forEach((p) => paths.push(`/blog/${p.id}`));
+  try { db.listDomains().forEach((d) => paths.push(`/domains/${d.slug}`)); } catch (e) {}
+  const esc = (u) => u.replace(/&/g, '&amp;');
+  const urls = paths.map((u) => `  <url><loc>${esc(base + u)}</loc></url>`).join('\n');
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+  res.type('application/xml').send(xml);
+});
+
 /* ================================== 404 ========================================= */
 
 app.use((req, res) => {
-  res.status(404).render('404', { title: 'Page not found — Fearless Rhino', active: '' });
+  res.status(404).render('404', { title: 'Page not found — Fearless Rhino', active: '', noindex: true });
 });
 
 app.listen(PORT, () => {
