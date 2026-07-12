@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="page-header" style="padding-bottom:56px;">
+  <span class="eyebrow">Insights</span>
+  <h1 class="display">Field notes from<br>the answer layer.</h1>
+  <p class="lede">Plain-spoken thinking on GEO, AEO, and how to be the brand AI recommends. No jargon-fog.</p>
+</section>
+
+<section class="container" style="padding:0 24px 110px;">
+  <div class="row-list">
+    <% posts.forEach(function(post) { %>
+      <a href="/blog/<%= post.id %>" class="row-list__item">
+        <div style="min-width:0;">
+          <div class="row-list__meta">
+            <span class="accent"><%= post.category %></span>
+            <span><%= post.date %></span>
+            <span><%= post.readTime %></span>
+          </div>
+          <h2 class="row-list__title"><%= post.title %></h2>
+          <p class="row-list__excerpt"><%= post.excerpt %></p>
+        </div>
+        <span class="row-list__cta">Read more &rarr;</span>
+      </a>
+    <% }); %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

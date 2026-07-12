@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="page-header">
+  <span class="eyebrow">Applications</span>
+  <h1 class="display">Tools we&rsquo;re building<br>for the AI-search era.</h1>
+  <p class="lede">The software behind our method — products that track, forge, and grow visibility across every answer engine. Browse what&rsquo;s launching and read the full details on each.</p>
+</section>
+
+<section class="container" style="padding:20px 24px 110px;">
+  <div class="grid-seam grid-seam--auto-fill">
+    <% apps.forEach(function(app) { %>
+      <a href="/apps/<%= app.id %>" class="tile app-tile">
+        <div class="app-tile__top">
+          <div class="app-tile__icon"><%= app.initials %></div>
+          <span class="pill pill--<%= app.status === 'Live' ? 'live' : (app.status === 'Beta' ? 'beta' : 'soon') %>"><%= app.status %></span>
+        </div>
+        <div style="flex:1;">
+          <div class="app-tile__cat"><%= app.category %></div>
+          <h3 class="app-tile__name"><%= app.name %></h3>
+          <p class="app-tile__blurb"><%= app.blurb %></p>
+        </div>
+        <span class="tile__link">Read more &rarr;</span>
+      </a>
+    <% }); %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

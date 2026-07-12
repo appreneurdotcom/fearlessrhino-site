@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:150px 24px 100px;">
+  <div class="contact-grid">
+
+    <!-- LEFT -->
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h1 class="display" style="font-size:clamp(38px,5.4vw,64px);line-height:1.0;">Book a strategy call.</h1>
+      <p class="body-text" style="color:var(--text-muted);max-width:440px;margin-bottom:44px;">Tell us about your brand and we&rsquo;ll show you where you stand in AI search today &mdash; and the fastest path into the answer.</p>
+
+      <div class="contact-info">
+        <div class="contact-info__block"><div class="contact-info__label">Email</div><a href="mailto:hello@fearlessrhino.com" class="contact-info__value" style="text-decoration:none;">hello@fearlessrhino.com</a></div>
+        <div class="contact-info__block"><div class="contact-info__label">Office</div><div class="contact-info__value">6128 W 9740 N<br>Highland, UT 84003</div></div>
+        <div class="contact-info__block"><div class="contact-info__label">Region</div><div class="contact-info__value">Silicon Slopes, Utah</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM -->
+    <div class="contact-form-card" data-async-endpoint="/contact">
+      <div data-form-error class="form-error<%= formError ? ' is-visible' : '' %>"><%= formError || '' %></div>
+
+      <form data-form-block method="POST" action="/contact" class="form-fields" <%= sent ? 'hidden' : '' %>>
+        <div class="field-row">
+          <label class="field">
+            <span class="field__label">Name</span>
+            <input type="text" name="name" required placeholder="Jane Doe">
+          </label>
+          <label class="field">
+            <span class="field__label">Email</span>
+            <input type="email" name="email" required placeholder="jane@company.com">
+          </label>
+        </div>
+        <label class="field">
+          <span class="field__label">Company / Website</span>
+          <input type="text" name="company" placeholder="company.com">
+        </label>
+        <label class="field">
+          <span class="field__label">What do you need help with?</span>
+          <textarea name="message" rows="4" placeholder="Branding, visibility, AI, automation, or where to start&hellip;"></textarea>
+        </label>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+          <label>Leave this field blank<input type="text" name="hp_field" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <button type="submit" class="btn btn--primary">Book my strategy call</button>
+        <p class="form-fine-print">By submitting you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
+      </form>
+
+      <div data-form-success class="form-success" <%= sent ? '' : 'hidden' %>>
+        <div class="form-success__check">&#10003;</div>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-0.02em;">Message sent.</h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:var(--text-muted);">Thanks &mdash; we&rsquo;ll be in touch within one business day to book your call.</p>
+        <button type="button" data-reset-form class="link-btn">Send another &rarr;</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<script src="/js/forms.js" defer></script>
+</body>
+</html>

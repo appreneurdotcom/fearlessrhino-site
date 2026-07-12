@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="page-header" style="padding-bottom:16px;">
+  <span class="eyebrow">Inventory</span>
+  <h1 class="display" style="font-size:clamp(36px,5.6vw,64px);">Domain Names For Sale</h1>
+
+  <p class="domains-intro">
+    All domain name transactions on this page are handled through <strong>Escrow.com</strong>. Every sale &mdash; whether paid in full or through a monthly payment plan &mdash; is managed by Escrow.com from start to finish. If you choose a monthly payment plan, you will have complete control of the domain name through Escrow.com for as long as you&rsquo;re making payments. If payments stop before the domain is paid off, ownership of the domain reverts back to the seller.
+  </p>
+</section>
+
+<section class="container" style="padding:0 24px 110px;">
+  <% if (!domains.length) { %>
+    <div class="domains-empty">
+      <p style="margin:0;">No domains are listed for sale yet. Check back soon.</p>
+    </div>
+  <% } else { %>
+    <div class="domain-table-wrap">
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Domain Name</th>
+            <th class="num">Monthly</th>
+            <th class="num">Buy Now</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% domains.forEach(function(d) { %>
+            <tr>
+              <td class="domain-cell" data-label="Domain Name">
+                <a class="domain-link" href="/domains/<%= d.slug %>"><%= d.domainName %></a>
+              </td>
+              <td class="num" data-label="Monthly">
+                <% if (d.monthlyPrice) { %>
+                  <span class="price"><%= formatMoney(d.monthlyPrice) %>/mo<% if (d.totalMonths) { %> &times; <%= d.totalMonths %><% } %></span>
+                <% } else { %>
+                  <span class="price muted">&mdash;</span>
+                <% } %>
+              </td>
+              <td class="num" data-label="Buy Now">
+                <% if (d.buyNowPrice) { %>
+                  <span class="price"><%= formatMoney(d.buyNowPrice) %></span>
+                <% } else { %>
+                  <span class="price muted">&mdash;</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<section class="cta-band section--top-border">
+  <div class="cta-band__inner">
+    <h2>Don&rsquo;t see the right fit?</h2>
+    <p>Reach out and we&rsquo;ll let you know if anything new is coming up for sale.</p>
+    <a href="/contact" class="btn btn--primary">Contact us</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

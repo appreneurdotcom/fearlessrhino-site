@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('../partials/head') %>
+</head>
+<body class="no-nav-offset">
+
+<div class="admin-shell" style="max-width:640px;">
+  <p style="margin-bottom:24px;"><a href="/admin" style="font-size:14px;color:var(--text-muted);">&larr; Back to admin</a></p>
+  <span class="eyebrow" style="margin-bottom:8px;">Edit listing</span>
+  <h1 style="margin:0 0 28px;font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-0.02em;"><%= domain.domainName %></h1>
+
+  <% if (error) { %>
+    <div class="form-error is-visible" style="margin-bottom:20px;"><%= error %></div>
+  <% } %>
+
+  <form method="POST" action="/admin/domains/<%= domain.id %>/edit" class="admin-card" style="display:flex;flex-direction:column;gap:18px;">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <label class="field">
+      <span class="field__label">Domain name</span>
+      <input type="text" name="domainName" required value="<%= domain.domainName %>">
+    </label>
+    <label class="field">
+      <span class="field__label">Description</span>
+      <textarea name="description" rows="4"><%= domain.description || '' %></textarea>
+    </label>
+    <div class="field-row">
+      <label class="field">
+        <span class="field__label">Monthly price</span>
+        <input type="text" name="monthlyPrice" value="<%= domain.monthlyPrice ?? '' %>" placeholder="e.g. 199">
+      </label>
+      <label class="field">
+        <span class="field__label">Total months</span>
+        <input type="text" name="totalMonths" value="<%= domain.totalMonths ?? '' %>" placeholder="e.g. 12">
+      </label>
+    </div>
+    <label class="field">
+      <span class="field__label">Buy now price</span>
+      <input type="text" name="buyNowPrice" value="<%= domain.buyNowPrice ?? '' %>" placeholder="e.g. 2500">
+    </label>
+    <p class="admin-note">Leave a price field blank to hide that option on the domain&rsquo;s page. Page URL: <code>/domains/<%= domain.slug %></code> (changes if you change the domain name).</p>
+    <button type="submit" class="btn btn--primary btn--small">Save changes</button>
+  </form>
+</div>
+
+</body>
+</html>

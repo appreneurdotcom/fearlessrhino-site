@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<% if (domain) {
+     const monthlyTotal = (domain.monthlyPrice && domain.totalMonths) ? domain.monthlyPrice * domain.totalMonths : null;
+%>
+<section class="domain-hero">
+  <a href="/domains" class="article__back">&larr; All domain names</a>
+  <div class="domain-hero__forsale" style="margin-top:28px;">For Sale</div>
+  <h1 class="domain-hero__title"><strong><%= domain.domainName %></strong></h1>
+  <% if (domain.description) { %>
+    <p class="domain-hero__desc"><%= domain.description %></p>
+  <% } %>
+</section>
+
+<section class="domain-options">
+
+  <!-- MONTHLY PLAN -->
+  <div class="domain-option">
+    <div class="domain-option__title">Monthly Payment Plan</div>
+    <% if (domain.monthlyPrice) { %>
+      <div class="domain-option__price">
+        <%= formatMoney(domain.monthlyPrice) %>/mo
+        <small>for <%= domain.totalMonths || '—' %> months<% if (monthlyTotal) { %> &middot; total <%= formatMoney(monthlyTotal) %><% } %></small>
+      </div>
+      <p class="domain-option__note">Managed through Escrow.com. You keep full control of the domain for as long as payments continue; if payments stop, ownership reverts to the seller.</p>
+
+      <div data-async-endpoint="/domains/<%= domain.slug %>/inquire">
+        <div data-form-error class="form-error<%= (formError && errorType === 'monthly') ? ' is-visible' : '' %>"><%= (errorType === 'monthly') ? (formError || '') : '' %></div>
+        <form data-form-block method="POST" action="/domains/<%= domain.slug %>/inquire" <%= sent === 'monthly' ? 'hidden' : '' %>>
+          <input type="hidden" name="type" value="monthly">
+          <label class="field"><span class="field__label">Name</span><input type="text" name="name" required placeholder="Jane Doe"></label>
+          <label class="field"><span class="field__label">Email</span><input type="email" name="email" required placeholder="jane@company.com"></label>
+          <label class="field"><span class="field__label">Phone (optional)</span><input type="tel" name="phone" placeholder="(555) 555-5555"></label>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+            <label>Leave this field blank<input type="text" name="hp_field" tabindex="-1" autocomplete="off"></label>
+          </div>
+          <button type="submit" class="btn btn--primary btn--small">Request the monthly plan</button>
+        </form>
+        <div data-form-success class="form-success" <%= sent === 'monthly' ? '' : 'hidden' %>>
+          <div class="form-success__check">&#10003;</div>
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:22px;">Request sent.</h2>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--text-muted);">Thanks &mdash; we&rsquo;ll follow up by email with a link to pay and get started.</p>
+        </div>
+      </div>
+    <% } else { %>
+      <p class="domain-unavailable">A monthly plan isn&rsquo;t available for this domain — see the buy now option.</p>
+    <% } %>
+  </div>
+
+  <!-- BUY NOW -->
+  <div class="domain-option">
+    <div class="domain-option__title">Buy Now</div>
+    <% if (domain.buyNowPrice) { %>
+      <div class="domain-option__price">
+        <%= formatMoney(domain.buyNowPrice) %>
+        <small>one-time payment, in full</small>
+      </div>
+      <p class="domain-option__note">Managed through Escrow.com. Funds are held securely by Escrow.com until the domain transfer is confirmed.</p>
+
+      <div data-async-endpoint="/domains/<%= domain.slug %>/inquire">
+        <div data-form-error class="form-error<%= (formError && errorType === 'buynow') ? ' is-visible' : '' %>"><%= (errorType === 'buynow') ? (formError || '') : '' %></div>
+        <form data-form-block method="POST" action="/domains/<%= domain.slug %>/inquire" <%= sent === 'buynow' ? 'hidden' : '' %>>
+          <input type="hidden" name="type" value="buynow">
+          <label class="field"><span class="field__label">Name</span><input type="text" name="name" required placeholder="Jane Doe"></label>
+          <label class="field"><span class="field__label">Email</span><input type="email" name="email" required placeholder="jane@company.com"></label>
+          <label class="field"><span class="field__label">Phone (optional)</span><input type="tel" name="phone" placeholder="(555) 555-5555"></label>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+            <label>Leave this field blank<input type="text" name="hp_field" tabindex="-1" autocomplete="off"></label>
+          </div>
+          <button type="submit" class="btn btn--primary btn--small">Request to buy now</button>
+        </form>
+        <div data-form-success class="form-success" <%= sent === 'buynow' ? '' : 'hidden' %>>
+          <div class="form-success__check">&#10003;</div>
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:22px;">Request sent.</h2>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--text-muted);">Thanks &mdash; we&rsquo;ll follow up by email with a link to pay.</p>
+        </div>
+      </div>
+    <% } else { %>
+      <p class="domain-unavailable">A buy-now price isn&rsquo;t available for this domain — see the monthly plan option.</p>
+    <% } %>
+  </div>
+
+</section>
+<% } else { %>
+<section class="not-found">
+  <h1>Domain not found</h1>
+  <p>That domain isn&rsquo;t listed for sale.</p>
+  <a href="/domains" class="btn btn--primary">Browse domain names</a>
+</section>
+<% } %>
+
+<div style="margin-top:40px;"><%- include('partials/footer') %></div>
+<script src="/js/forms.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('../partials/head') %>
+</head>
+<body class="no-nav-offset">
+
+<div class="admin-login-shell">
+  <a href="/" style="display:flex;align-items:center;gap:12px;text-decoration:none;margin-bottom:48px;">
+    <svg viewBox="0 0 120 120" width="34" height="34" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="120" height="120" rx="26" fill="#0F0F10"></rect>
+      <polygon points="34,90 50,90 52,54" fill="#C6F24E"></polygon>
+      <polygon points="56,90 78,90 94,22" fill="#C6F24E"></polygon>
+    </svg>
+    <span style="font-family:var(--font-display);font-weight:700;font-size:19px;letter-spacing:-0.03em;color:var(--text);">Fearless Rhino</span>
+  </a>
+
+  <span class="eyebrow" style="margin-bottom:14px;">Admin</span>
+  <h1 style="margin:0 0 28px;font-family:var(--font-display);font-weight:700;font-size:32px;letter-spacing:-0.02em;">Sign in</h1>
+
+  <% if (error) { %>
+    <div class="form-error is-visible" style="margin-bottom:20px;"><%= error %></div>
+  <% } %>
+
+  <form method="POST" action="/admin/login" class="admin-card" style="display:flex;flex-direction:column;gap:18px;margin-bottom:0;">
+    <input type="hidden" name="next" value="<%= next %>">
+    <label class="field">
+      <span class="field__label">Password</span>
+      <input type="password" name="password" required autofocus>
+    </label>
+    <button type="submit" class="btn btn--primary">Sign in</button>
+  </form>
+
+  <p style="margin-top:24px;"><a href="/" style="font-size:14px;color:var(--text-muted);">&larr; Back to the site</a></p>
+</div>
+
+</body>
+</html>

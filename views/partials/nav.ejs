@@ -1,0 +1,35 @@
+<%
+  const links = typeof navLinks !== 'undefined' ? navLinks : [];
+  const activeKey = typeof active !== 'undefined' ? active : '';
+%>
+<header class="site-nav" id="site-nav">
+  <div class="site-nav__bar">
+    <a href="/" class="site-nav__logo">
+      <svg viewBox="0 0 120 120" width="34" height="34" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+        <rect x="0" y="0" width="120" height="120" rx="26" fill="#0F0F10"></rect>
+        <polygon points="34,90 50,90 52,54" fill="#C6F24E"></polygon>
+        <polygon points="56,90 78,90 94,22" fill="#C6F24E"></polygon>
+      </svg>
+      <span>Fearless Rhino</span>
+    </a>
+
+    <nav class="site-nav__links">
+      <% links.forEach(function(link) { %>
+        <a href="<%= link.href %>" class="site-nav__link<%= link.key === activeKey ? ' is-active' : '' %>"><%= link.label %></a>
+      <% }); %>
+      <a href="/contact" class="btn btn--primary btn--small site-nav__cta">Book a strategy call</a>
+    </nav>
+
+    <button class="site-nav__toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="site-nav__mobile" id="nav-mobile">
+    <% links.forEach(function(link) { %>
+      <a href="<%= link.href %>" class="site-nav__mobile-link<%= link.key === activeKey ? ' is-active' : '' %>"><%= link.label %></a>
+    <% }); %>
+    <a href="/contact" class="btn btn--primary">Book a strategy call</a>
+  </div>
+</header>
+<script src="/js/nav.js" defer></script>

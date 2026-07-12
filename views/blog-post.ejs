@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<% if (post) { %>
+<article class="article">
+  <a href="/blog" class="article__back">&larr; All insights</a>
+  <div class="article__meta">
+    <span class="accent"><%= post.category %></span>
+    <span><%= post.date %></span>
+    <span><%= post.readTime %></span>
+  </div>
+  <h1><%= post.title %></h1>
+  <div>
+    <% (post.body || []).forEach(function(block) { %>
+      <% if (block.h) { %>
+        <div class="article__block-h"><%= block.h %></div>
+      <% } else { %>
+        <p class="article__block-p"><%= block.p %></p>
+      <% } %>
+    <% }); %>
+  </div>
+  <div class="article__footer">
+    <span style="font-size:16px;color:var(--text-muted);">Want this working for your brand?</span>
+    <a href="/contact" class="btn btn--primary btn--small">Book a strategy call</a>
+  </div>
+</article>
+<% } else { %>
+<section class="not-found">
+  <h1>Post not found</h1>
+  <p>That article doesn&rsquo;t exist.</p>
+  <a href="/blog" class="btn btn--primary">Back to insights</a>
+</section>
+<% } %>
+
+<div style="margin-top:80px;"><%- include('partials/footer') %></div>
+</body>
+</html>

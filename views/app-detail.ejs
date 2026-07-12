@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<% if (app) { %>
+<article class="article article--wide">
+  <a href="/apps" class="article__back">&larr; All applications</a>
+
+  <div class="app-detail__head">
+    <div class="app-detail__icon"><%= app.initials %></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);"><%= app.category %></span>
+        <span class="pill pill--<%= app.status === 'Live' ? 'live' : (app.status === 'Beta' ? 'beta' : 'soon') %>"><%= app.status %></span>
+      </div>
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(34px,5vw,52px);letter-spacing:-0.03em;line-height:1;"><%= app.name %></h1>
+    </div>
+  </div>
+  <p class="app-detail__tagline"><%= app.tagline %></p>
+
+  <div class="app-detail__layout">
+    <div style="min-width:0;">
+      <% (app.body || []).forEach(function(block) { %>
+        <% if (block.h) { %>
+          <div class="article__block-h" style="font-size:22px;margin:34px 0 12px;"><%= block.h %></div>
+        <% } else { %>
+          <p class="article__block-p" style="font-size:17px;line-height:1.7;margin:0 0 18px;"><%= block.p %></p>
+        <% } %>
+      <% }); %>
+    </div>
+
+    <aside class="app-detail__aside">
+      <div class="app-detail__aside-block">
+        <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:16px;">Get it</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <% (app.platforms || []).forEach(function(p) { %>
+            <a href="<%= p.url %>" class="btn btn--primary btn--small"><%= p.label %></a>
+          <% }); %>
+        </div>
+      </div>
+      <div class="app-detail__aside-block">
+        <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:16px;">Highlights</div>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+          <% (app.features || []).forEach(function(f) { %>
+            <div class="app-detail__feature"><span style="color:var(--accent);flex-shrink:0;margin-top:1px;">&#8250;</span><span><%= f %></span></div>
+          <% }); %>
+        </div>
+      </div>
+    </aside>
+  </div>
+</article>
+<% } else { %>
+<section class="not-found">
+  <h1>App not found</h1>
+  <p>That application doesn&rsquo;t exist yet.</p>
+  <a href="/apps" class="btn btn--primary">Browse applications</a>
+</section>
+<% } %>
+
+<div style="margin-top:80px;"><%- include('partials/footer') %></div>
+</body>
+</html>

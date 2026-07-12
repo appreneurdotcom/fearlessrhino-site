@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('../partials/head') %>
+</head>
+<body class="no-nav-offset">
+
+<div class="admin-shell">
+  <div class="admin-topbar">
+    <div>
+      <span class="eyebrow" style="margin-bottom:8px;">Admin</span>
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-0.02em;">Domain Names manager</h1>
+    </div>
+    <div class="admin-actions">
+      <a href="/domains" target="_blank" class="btn btn--secondary btn--small">View live page</a>
+      <form method="POST" action="/admin/logout" style="display:inline;">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button type="submit" class="btn btn--secondary btn--small">Log out</button>
+      </form>
+    </div>
+  </div>
+
+  <% if (flash) { %>
+    <div class="flash flash--<%= flashType === 'error' ? 'error' : 'ok' %>"><%= flash %></div>
+  <% } %>
+
+  <% if (!emailConfigured) { %>
+    <div class="flash flash--error">
+      No email provider is configured yet, so inquiry emails are being logged below but not actually sent to your inbox. Set <code>RESEND_API_KEY</code> or <code>SMTP_HOST</code> (see <code>.env.example</code>) to start receiving them.
+    </div>
+  <% } %>
+
+  <div class="admin-stat-row">
+    <div class="admin-stat"><div class="admin-stat__num"><%= domains.length %></div><div class="admin-stat__label">Domains listed</div></div>
+    <div class="admin-stat"><div class="admin-stat__num"><%= domains.filter(function(d){return d.monthlyPrice;}).length %></div><div class="admin-stat__label">With a monthly plan</div></div>
+    <div class="admin-stat"><div class="admin-stat__num"><%= domains.filter(function(d){return d.buyNowPrice;}).length %></div><div class="admin-stat__label">With a buy-now price</div></div>
+    <div class="admin-stat"><div class="admin-stat__num"><%= inquiries.length %></div><div class="admin-stat__label">Recent inquiries</div></div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="admin-card">
+    <h2>Upload domain list</h2>
+    <p class="admin-card__hint">
+      Upload a .csv or .xlsx spreadsheet with these columns: <strong>Domain Name, Description, Monthly Price, Total Months, Buy Now Price</strong>.
+      Leave Monthly Price/Total Months or Buy Now Price blank for a domain if that option shouldn&rsquo;t be offered.
+      Not sure of the format? <a href="/admin/template.csv">Download a blank template</a>.
+    </p>
+    <form method="POST" action="/admin/upload" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="upload-drop">
+        <input type="file" name="spreadsheet" accept=".csv,.xlsx,.xls" required>
+      </div>
+      <div class="radio-row" style="margin-bottom:20px;">
+        <label><input type="radio" name="mode" value="merge" checked> <span><strong>Merge</strong> — add new domains and update existing ones by domain name. Domains already on the site that aren&rsquo;t in this file are left alone. (Recommended)</span></label>
+        <label><input type="radio" name="mode" value="replace"> <span><strong>Replace</strong> — wipe the current list first, then load only what&rsquo;s in this file.</span></label>
+      </div>
+      <button type="submit" class="btn btn--primary btn--small">Upload &amp; process</button>
+    </form>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="admin-card">
+    <h2>Download domain list + URLs</h2>
+    <p class="admin-card__hint">A CSV of every domain currently listed, with the exact page URL for each one — use it to point each domain's forwarding at its page through your registrar.</p>
+    <a href="/admin/export.csv" class="btn btn--secondary btn--small">Download CSV</a>
+  </div>
+
+  <!-- DOMAIN TABLE -->
+  <div class="admin-card">
+    <h2>Current listings (<%= domains.length %>)</h2>
+    <% if (!domains.length) { %>
+      <p class="admin-card__hint">Nothing uploaded yet — use the upload card above to add your first batch of domains.</p>
+    <% } else { %>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Domain</th><th>Page URL</th><th>Monthly</th><th>Buy now</th><th>Updated</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% domains.forEach(function(d) { %>
+              <tr>
+                <td><strong><%= d.domainName %></strong></td>
+                <td><a href="/domains/<%= d.slug %>" target="_blank" style="font-size:13px;">/domains/<%= d.slug %></a></td>
+                <td><%= d.monthlyPrice ? (formatMoney(d.monthlyPrice) + '/mo x ' + (d.totalMonths || '—')) : '—' %></td>
+                <td><%= d.buyNowPrice ? formatMoney(d.buyNowPrice) : '—' %></td>
+                <td><%= d.updatedAt ? d.updatedAt.slice(0,10) : '—' %></td>
+                <td>
+                  <div class="admin-table__actions">
+                    <a href="/admin/domains/<%= d.id %>/edit" class="link-btn">Edit</a>
+                    <form method="POST" action="/admin/domains/<%= d.id %>/delete" onsubmit="return confirm('Delete <%= d.domainName.replace(/'/g, '') %>? This can&#39;t be undone.');">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="link-btn link-btn--danger">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- INQUIRY LOG -->
+  <div class="admin-card">
+    <h2>Recent inquiries</h2>
+    <p class="admin-card__hint">The most recent contact-form and domain-inquiry submissions, kept here as a backup in case an email doesn&rsquo;t arrive.</p>
+    <% if (!inquiries.length) { %>
+      <p class="admin-card__hint">No submissions yet.</p>
+    <% } else { %>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>When</th><th>Type</th><th>From</th><th>Subject</th><th>Emailed?</th></tr>
+          </thead>
+          <tbody>
+            <% inquiries.forEach(function(i) { %>
+              <tr>
+                <td style="white-space:nowrap;"><%= i.createdAt ? i.createdAt.slice(0,16).replace('T',' ') : '' %></td>
+                <td style="white-space:nowrap;"><%= i.type %></td>
+                <td><%= i.name %><br><span style="color:var(--text-faint);"><%= i.email %></span></td>
+                <td><%= i.subject %></td>
+                <td><%= i.emailSent ? '✔ sent' : '✖ ' + (i.emailError || 'not sent') %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+
+  <p class="admin-note">Signed in as admin. Change the admin password any time via the <code>ADMIN_PASSWORD</code> (or <code>ADMIN_PASSWORD_HASH</code>) environment variable.</p>
+</div>
+
+</body>
+</html>
