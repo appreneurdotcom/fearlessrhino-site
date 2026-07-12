@@ -1,0 +1,15 @@
+# Fearless Rhino
+
+> Branding, visibility, AI, and automation for businesses that refuse to be overlooked. Fearless Rhino fixes branding, gets clients found across traditional search and AI answer engines (GEO/AEO), and builds custom automation and AI.
+
+## Pages
+- [Home](/): Overview of Fearless Rhino services.
+- [Services](/services): Branding, search and AI-search visibility, automation, and AI builds.
+- [Process](/process): How engagements run from audit to launch to optimization.
+- [Applications](/apps): Products including RhinoRank, CitationForge, and Herd Signals.
+- [Blog](/blog): Insights on SEO, GEO, AEO, and AI visibility.
+- [Domain Names](/domains): Premium .com and .ai domains for sale.
+- [Contact](/contact): Book a strategy call.
+
+## Notes
+- Canonical structured data (Organization, WebSite, BlogPosting, Product) is published as JSON-LD on the site.
