@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 
 const db = require('./src/db');
 const content = require('./src/content');
+const faqs = require('./src/faqs');
 const mailer = require('./src/mailer');
 const navLinks = require('./src/nav');
 const { slugify } = require('./src/slug');
@@ -67,19 +68,19 @@ function wantsJson(req) {
 /* ============================== Marketing pages ============================== */
 
 app.get('/', (req, res) => {
-  res.render('home', { active: 'home', title: 'Fearless Rhino — Be impossible to overlook.' , description: 'Fearless Rhino fixes your branding, gets you found across Google and AI search, and builds custom automation so your business is impossible to overlook.' });
+  res.render('home', { active: 'home', title: 'Fearless Rhino — Be impossible to overlook.' , description: 'Fearless Rhino fixes your branding, gets you found across Google and AI search, and builds custom automation so your business is impossible to overlook.', faq: faqs.home });
 });
 
 app.get('/about', (req, res) => {
-  res.render('about', { active: 'about', title: 'About — Fearless Rhino' , description: 'Meet Fearless Rhino, a branding, visibility, AI, and automation studio for businesses that refuse to be overlooked.' });
+  res.render('about', { active: 'about', title: 'About — Fearless Rhino' , description: 'Meet Fearless Rhino, a branding, visibility, AI, and automation studio for businesses that refuse to be overlooked.', faq: faqs.about });
 });
 
 app.get('/services', (req, res) => {
-  res.render('services', { active: 'services', title: 'Services — Fearless Rhino' , description: 'Branding, SEO and AI-search visibility (GEO and AEO), custom automation, and AI builds from Fearless Rhino, so you get found and win the work.' });
+  res.render('services', { active: 'services', title: 'Services — Fearless Rhino' , description: 'Branding, SEO and AI-search visibility (GEO and AEO), custom automation, and AI builds from Fearless Rhino, so you get found and win the work.', faq: faqs.services });
 });
 
 app.get('/process', (req, res) => {
-  res.render('process', { active: 'process', title: 'Process — Fearless Rhino' , description: 'How Fearless Rhino works: a clear, repeatable process from brand and visibility audit through build, launch, and ongoing optimization.' });
+  res.render('process', { active: 'process', title: 'Process — Fearless Rhino' , description: 'How Fearless Rhino works: a clear, repeatable process from brand and visibility audit through build, launch, and ongoing optimization.', faq: faqs.process });
 });
 
 app.get('/results', (req, res) => {
@@ -87,7 +88,7 @@ app.get('/results', (req, res) => {
 });
 
 app.get('/pricing', (req, res) => {
-  res.render('pricing', { active: 'pricing', title: 'Pricing — Fearless Rhino' , description: 'Simple, transparent pricing for Fearless Rhino branding, visibility, and automation engagements.' });
+  res.render('pricing', { active: 'pricing', title: 'Pricing — Fearless Rhino' , description: 'Simple, transparent pricing for Fearless Rhino branding, visibility, and automation engagements.', faq: faqs.pricing });
 });
 
 app.get('/privacy', (req, res) => {

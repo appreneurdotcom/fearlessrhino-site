@@ -1,0 +1,16 @@
+<% if (typeof faq !== 'undefined' && faq && faq.length) { %>
+<section class="faq section--top-border">
+  <div class="faq__inner">
+    <h2 class="faq__title"><%= (typeof faqTitle !== 'undefined' && faqTitle) ? faqTitle : 'Frequently asked questions' %></h2>
+    <div class="faq__list">
+      <% faq.forEach(function (item, i) { %>
+        <details class="faq__item"<%= i === 0 ? ' open' : '' %>>
+          <summary class="faq__q"><%= item.q %></summary>
+          <div class="faq__a"><p><%= item.a %></p></div>
+        </details>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json"><%- JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (f) { return { '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }; }) }).replace(/</g, '\\u003c') %></script>
+<% } %>

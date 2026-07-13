@@ -487,3 +487,16 @@ table.admin-table tr:last-child td { border-bottom: none; }
   .hero__ctas .btn { width: 100%; }
   .site-nav__bar { padding: 0 16px; }
 }
+
+/* ============================== FAQ (GEO/AEO) ============================== */
+.faq { padding: 64px 0; }
+.faq__inner { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+.faq__title { font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px); letter-spacing: -0.02em; margin-bottom: 24px; color: var(--text); }
+.faq__item { border-bottom: 1px solid var(--border-card); }
+.faq__q { font-family: var(--font-display); font-weight: 600; font-size: 19px; color: var(--text); cursor: pointer; list-style: none; padding: 18px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::after { content: '+'; color: var(--accent); font-size: 26px; line-height: 1; flex: none; }
+.faq__item[open] .faq__q::after { content: '\2013'; }
+.faq__a { padding: 0 0 20px; }
+.faq__a p { color: var(--text-body); font-size: 16px; line-height: 1.65; margin: 0; max-width: 72ch; }
+.article__lead { font-size: 19px; line-height: 1.65; color: var(--text); margin: 18px 0 8px; max-width: 72ch; }
