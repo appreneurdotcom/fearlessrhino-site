@@ -15,6 +15,7 @@
     <span><%= post.readTime %></span>
   </div>
   <h1><%= post.title %></h1>
+  <% if (post.lead) { %><p class="article__lead"><%= post.lead %></p><% } %>
   <div>
     <% (post.body || []).forEach(function(block) { %>
       <% if (block.h) { %>

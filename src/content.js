@@ -83,6 +83,7 @@ module.exports = {
     {
       id: 'in-the-answer',
       title: 'There is no page two in AI search',
+      lead: "In AI search, buyers ask one question and act on one synthesized answer, so there is no second page of results to rank on. Either your brand is part of the answer or it is invisible. This piece explains what that shift changes about being found, and how to earn a place in the answer.",
       excerpt: "Buyers stopped scrolling ten blue links. They ask one question and act on one synthesized answer. Here's what that changes about being found.",
       date: 'June 2026',
       category: 'GEO',
@@ -99,6 +100,7 @@ module.exports = {
     {
       id: 'geo-vs-aeo-vs-seo',
       title: 'GEO vs AEO vs SEO: what actually differs',
+      lead: "SEO ranks you in a list of links. AEO structures your content so engines can extract and cite it. GEO shapes how AI models describe and recommend you across prompts. All three share one goal, being the answer, but they work at different layers. This piece breaks down where they overlap and where they diverge.",
       excerpt: 'Three acronyms, one goal — being the answer. A plain-language breakdown of where they overlap and where they diverge.',
       date: 'May 2026',
       category: 'Strategy',
@@ -117,6 +119,7 @@ module.exports = {
     {
       id: 'measure-ai-visibility',
       title: 'How to actually measure AI visibility',
+      lead: "You measure AI visibility by tracking three things across the answer engines your buyers use: how often you are mentioned, how often you are cited as a source, and how you compare to competitors. This piece covers the three numbers that tell you whether AI engines are on your side, and how to move them.",
       excerpt: "If you can't see it, you can't grow it. The three numbers that tell you whether AI engines are on your side.",
       date: 'April 2026',
       category: 'Measurement',
