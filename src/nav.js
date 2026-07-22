@@ -4,8 +4,9 @@ module.exports = [
   { key: 'services', label: 'Services', href: '/services' },
   { key: 'applications', label: 'Applications', href: '/apps' },
   { key: 'results', label: 'Results', href: '/results' },
-  { key: 'pricing', label: 'Pricing', href: '/pricing' },
-  { key: 'blog', label: 'Blog', href: '/blog' },
+  // Pricing and Blog are hidden for now (still fully built — see server.js
+  // and footer.ejs for the matching hidden entries). Restore all three
+  // together to bring them back.
   { key: 'domains', label: 'Domain Names', href: '/domains' },
   { key: 'about', label: 'About', href: '/about' },
 ];

@@ -9,22 +9,30 @@
 <section class="page-header">
   <span class="eyebrow">Services</span>
   <h1 class="display">Everything it takes<br>to grow.</h1>
-  <p class="lede">Four services, one accountable team. We fix how your brand shows up, get you found across search and AI, build automation and AI into your operations, and give you the strategy to tie it all together.</p>
+  <p class="lede">Five services, one accountable team. We fix how your brand shows up, get you found across search and AI, build the automation, AI, and custom software your business runs on, and give you the strategy to tie it all together.</p>
 </section>
 
 <section class="container" style="padding:0 24px 30px;">
-  <div class="grid-seam grid-seam--auto-sm">
-    <a href="#brand" style="background:var(--card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
+  <!-- 5 items in an auto-fit grid can leave a partial last row (e.g. 3+2 or
+       4+1 depending on viewport). The container is set transparent with
+       gap:0 and each pill carries its own border, so a partial row never
+       shows a leftover solid-colored block the way a filled grid background
+       would. -->
+  <div class="grid-seam grid-seam--auto-sm" style="background:transparent;border:none;gap:0;">
+    <a href="#brand" style="background:var(--card);border:1px solid var(--border-card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
       <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">01</span><span style="font-size:15px;font-weight:600;">Branding &amp; visibility</span>
     </a>
-    <a href="#ai-search" style="background:var(--card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
+    <a href="#ai-search" style="background:var(--card);border:1px solid var(--border-card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
       <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">02</span><span style="font-size:15px;font-weight:600;">Get found in AI search</span>
     </a>
-    <a href="#automation" style="background:var(--card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
+    <a href="#automation" style="background:var(--card);border:1px solid var(--border-card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
       <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">03</span><span style="font-size:15px;font-weight:600;">Automation &amp; AI</span>
     </a>
-    <a href="#consulting" style="background:var(--card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
+    <a href="#consulting" style="background:var(--card);border:1px solid var(--border-card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
       <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">04</span><span style="font-size:15px;font-weight:600;">Consulting</span>
+    </a>
+    <a href="#development" style="background:var(--card);border:1px solid var(--border-card);padding:20px 22px;text-decoration:none;color:inherit;display:flex;gap:12px;align-items:baseline;">
+      <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent);">05</span><span style="font-size:15px;font-weight:600;">Development</span>
     </a>
   </div>
 </section>
@@ -86,6 +94,21 @@
       <div style="padding:22px 26px;"><div style="font-size:16px;font-weight:600;margin-bottom:5px;">Strategy &amp; roadmap</div><div style="font-size:14px;color:var(--text-muted);line-height:1.55;">Where to focus first, and what it takes to win in your market.</div></div>
       <div style="padding:22px 26px;"><div style="font-size:16px;font-weight:600;margin-bottom:5px;">Fractional guidance</div><div style="font-size:14px;color:var(--text-muted);line-height:1.55;">Ongoing expert direction without the cost of a full-time hire.</div></div>
       <div style="padding:22px 26px;"><div style="font-size:16px;font-weight:600;margin-bottom:5px;">Audits &amp; training</div><div style="font-size:14px;color:var(--text-muted);line-height:1.55;">Know exactly where you stand &mdash; and level up your team to keep it going.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="development" class="section section--top-border">
+  <div class="container" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;align-items:start;">
+    <div>
+      <div style="font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em;color:var(--text-faint);margin-bottom:14px;">05 &middot; Custom Software</div>
+      <h2 class="display" style="font-size:clamp(28px,3.6vw,40px);line-height:1.08;margin-bottom:18px;">Custom software &amp; AI-powered apps</h2>
+      <p class="body-text" style="color:var(--text-muted);">When the tool you need doesn&rsquo;t exist off the shelf, we build it. Web platforms, mobile apps, and AI-powered products designed around how your business actually operates &mdash; not squeezed into someone else&rsquo;s template.</p>
+    </div>
+    <div class="grid-seam" style="grid-template-columns:1fr;">
+      <div style="padding:22px 26px;"><div style="font-size:16px;font-weight:600;margin-bottom:5px;">Web &amp; mobile products</div><div style="font-size:14px;color:var(--text-muted);line-height:1.55;">Customer portals, internal tools, e-commerce, and booking systems, plus native and cross-platform mobile apps built to hold up under real daily use.</div></div>
+      <div style="padding:22px 26px;"><div style="font-size:16px;font-weight:600;margin-bottom:5px;">AI-driven functionality</div><div style="font-size:14px;color:var(--text-muted);line-height:1.55;">Assistants, smart search, and models tuned for recommendations, forecasting, and classification &mdash; built around your own data, not a one-size-fits-all setup.</div></div>
+      <div style="padding:22px 26px;"><div style="font-size:16px;font-weight:600;margin-bottom:5px;">Built to last, not just launch</div><div style="font-size:14px;color:var(--text-muted);line-height:1.55;">Planning and design through development, testing, and the ongoing support that keeps things running as your business grows.</div></div>
     </div>
   </div>
 </section>

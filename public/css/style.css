@@ -193,7 +193,14 @@ body.no-nav-offset { padding-top: 0; }
 
 /* -------------------------------- Cards ---------------------------------- */
 .card { background: var(--card); border: 1px solid var(--border-card); padding: 40px 34px; }
-.tile { background: var(--card); padding: 40px 34px; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.tile { background: var(--card); padding: 40px 34px; display: flex; flex-direction: column; text-decoration: none; color: inherit; border: 1px solid var(--border-card); }
+/* This grid can hold a count that doesn't evenly fill each row (e.g. 5 tiles
+   in a 4-column layout). The seam trick elsewhere relies on the grid
+   container's background peeking through the gaps, which looks fine for a
+   full grid but paints a solid block over any leftover empty cells in a
+   partial row. Tiles carry their own border instead, so a transparent
+   container (see the inline override where this grid is used) never shows
+   that phantom block, regardless of how the row count divides. */
 .tile:hover .tile__link { color: var(--accent-hover); }
 .tile__index { font-family: var(--font-mono); font-size: 12px; color: var(--accent); margin-bottom: 22px; }
 .tile__title { margin: 0 0 14px; font-family: var(--font-display); font-weight: 600; font-size: 24px; letter-spacing: -0.01em; }

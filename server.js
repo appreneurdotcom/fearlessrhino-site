@@ -75,8 +75,11 @@ app.get('/results', (req, res) => {
   res.render('results', { active: 'results', title: 'Results — Fearless Rhino' });
 });
 
+// Pricing is hidden for now — redirected instead of removed so the page
+// (and its content) is still intact and easy to bring back. To restore,
+// swap this back to: res.render('pricing', { active: 'pricing', title: 'Pricing — Fearless Rhino' });
 app.get('/pricing', (req, res) => {
-  res.render('pricing', { active: 'pricing', title: 'Pricing — Fearless Rhino' });
+  res.redirect(302, '/');
 });
 
 app.get('/privacy', (req, res) => {
@@ -101,18 +104,37 @@ app.get('/apps/:id', (req, res) => {
   res.render('app-detail', { active: 'applications', app: item, title: `${item.name} — Fearless Rhino` });
 });
 
+/* ================================= Sitemap ====================================== */
+
+app.get('/sitemap.xml', (req, res) => {
+  const staticPaths = [
+    '/', '/about', '/services', '/process', '/results', '/apps',
+    '/domains', '/contact', '/privacy', '/terms',
+  ];
+  const appPaths = content.apps.map((a) => `/apps/${a.id}`);
+  const domainPaths = db.listDomains().map((d) => `/domains/${d.slug}`);
+  const urls = [...staticPaths, ...appPaths, ...domainPaths];
+
+  res.type('application/xml');
+  res.send(
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      urls.map((p) => `  <url><loc>${res.locals.baseUrl}${p}</loc></url>`).join('\n') +
+      `\n</urlset>`
+  );
+});
+
 /* ================================== Blog ======================================= */
 
+// Blog is hidden for now — same approach as /pricing above, redirected
+// rather than removed. To restore, swap both handlers back to their
+// res.render(...) versions (see git history / README).
 app.get('/blog', (req, res) => {
-  res.render('blog', { active: 'blog', posts: content.posts, title: 'Blog — Fearless Rhino' });
+  res.redirect(302, '/');
 });
 
 app.get('/blog/:id', (req, res) => {
-  const post = content.posts.find((p) => p.id === req.params.id);
-  if (!post) {
-    return res.status(404).render('blog-post', { active: 'blog', post: null, title: 'Post not found — Fearless Rhino' });
-  }
-  res.render('blog-post', { active: 'blog', post, title: `${post.title} — Fearless Rhino` });
+  res.redirect(302, '/');
 });
 
 /* ================================= Contact ===================================== */
